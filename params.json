@@ -1,0 +1,6 @@
+{
+  "name": "LPSTEDA",
+  "tagline": "",
+  "body": "# Live Programming for Spatio-Textual Exploratory Data Stream Analysis\r\n\r\nThis project aims to build a live programming platform for data analytics over spatio-textual data streams.  \r\n\r\n## Build from Souce\r\n### Mac/Linux\r\nThe project comes with an sbt launcher script. With this script, you don't need to have sbt installed. First, clone the git repo, using the following command: \r\n```sh\r\n$ git clone https://github.com/qadahtm/lpsteda\r\n```\r\nNext, build the project using:\r\n```sh\r\n$ ./sbt pack\r\n```\r\nScripts for launching the webserver will be avaible in `./target/pack/bin` directory.\r\n### Windows\r\nYou will need sbt installed. Refer to the following url: http://www.scala-sbt.org/release/tutorial/Installing-sbt-on-Windows.html\r\n\r\n## External API\r\nSome code requires API access to some online web services. For example, we (currently) use  Mapbox for tile dataset. You need to create a file called `api.js` and place it in the `ui/public/js` directory\r\n```javascript\r\nvar mapboxapi = {\r\n\taccessToken: \"your access token\",\r\n\tpid: \"your project id\"\r\n\t};\r\n```",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}

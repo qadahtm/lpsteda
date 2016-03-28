@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="LPSTEDA : ">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>LPSTEDA</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/qadahtm/lpsteda">View on GitHub</a>
+
+          <h1 id="project_title">LPSTEDA</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/qadahtm/lpsteda/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/qadahtm/lpsteda/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="live-programming-for-spatio-textual-exploratory-data-stream-analysis" class="anchor" href="#live-programming-for-spatio-textual-exploratory-data-stream-analysis" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Live Programming for Spatio-Textual Exploratory Data Stream Analysis</h1>
+
+<p>This project aims to build a live programming platform for data analytics over spatio-textual data streams.  </p>
+
+<h2>
+<a id="build-from-souce" class="anchor" href="#build-from-souce" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build from Souce</h2>
+
+<h3>
+<a id="maclinux" class="anchor" href="#maclinux" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Mac/Linux</h3>
+
+<p>The project comes with an sbt launcher script. With this script, you don't need to have sbt installed. First, clone the git repo, using the following command: </p>
+
+<div class="highlight highlight-source-shell"><pre>$ git clone https://github.com/qadahtm/lpsteda</pre></div>
+
+<p>Next, build the project using:</p>
+
+<div class="highlight highlight-source-shell"><pre>$ ./sbt pack</pre></div>
+
+<p>Scripts for launching the webserver will be avaible in <code>./target/pack/bin</code> directory.</p>
+
+<h3>
+<a id="windows" class="anchor" href="#windows" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Windows</h3>
+
+<p>You will need sbt installed. Refer to the following url: <a href="http://www.scala-sbt.org/release/tutorial/Installing-sbt-on-Windows.html">http://www.scala-sbt.org/release/tutorial/Installing-sbt-on-Windows.html</a></p>
+
+<h2>
+<a id="external-api" class="anchor" href="#external-api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>External API</h2>
+
+<p>Some code requires API access to some online web services. For example, we (currently) use  Mapbox for tile dataset. You need to create a file called <code>api.js</code> and place it in the <code>ui/public/js</code> directory</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> mapboxapi <span class="pl-k">=</span> {
+    accessToken<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>your access token<span class="pl-pds">"</span></span>,
+    pid<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>your project id<span class="pl-pds">"</span></span>
+    };</pre></div>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">LPSTEDA maintained by <a href="https://github.com/qadahtm">qadahtm</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
