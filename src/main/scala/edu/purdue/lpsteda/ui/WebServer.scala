@@ -1,5 +1,5 @@
 /*
-   Copyright 2014 - Thamir Qadah
+   Copyright 2016 - Thamir Qadah
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ import spray.routing.Directive.pimpApply
 import spray.routing.SimpleRoutingApp
 import spray.routing.directives.FieldDefMagnet.apply
 import spray.routing.directives.ParamDefMagnet.apply
-import edu.purdue.lpspeda.utils.Helper
+import edu.purdue.lpsteda.utils.Helper
 
 object Webserver extends App with SimpleRoutingApp {
 
@@ -88,7 +88,7 @@ object Webserver extends App with SimpleRoutingApp {
   // starting http server 
   startServer(interface = host, port = port) {
     getFromDirectory("ui/public") ~
-      getAvailableDataFiles ~
+      getAvailableDataFiles~
       getAllStreamSourcesRoute
   }
 }

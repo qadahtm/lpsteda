@@ -6,7 +6,7 @@ This project aims to build a live programming platform for data analytics over s
 ### Mac/Linux
 The project comes with an sbt launcher script. With this script, you don't need to have sbt installed. First, clone the git repo, using the following command: 
 ```sh
-$ git clone https://github.com/qadahtm/sfsserver
+$ git clone https://github.com/qadahtm/lpsteda
 ```
 Next, build the project using:
 ```sh
