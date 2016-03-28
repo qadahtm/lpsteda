@@ -1,0 +1,11 @@
+#content{
+	margin-top:56px;
+}
+.CodeMirror{
+	border:solid black;
+	height: 645px;
+}
+
+#outputVis{
+	height: 720px;
+}
