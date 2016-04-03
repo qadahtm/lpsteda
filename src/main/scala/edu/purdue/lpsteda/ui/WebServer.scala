@@ -88,6 +88,7 @@ object Webserver extends App with SimpleRoutingApp {
   // starting http server 
   startServer(interface = host, port = port) {
     getFromDirectory("ui/public") ~
+    getFromDirectory("data") ~
       getAvailableDataFiles~
       getAllStreamSourcesRoute
   }
