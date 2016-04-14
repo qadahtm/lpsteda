@@ -16,6 +16,8 @@ $(document).ready(function(){
 
 	// CM
 	initializeCM();
+	
+	initializeAC();
 
 	initLPSupport();
 	
