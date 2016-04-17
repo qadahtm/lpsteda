@@ -52,6 +52,7 @@
   <script type="text/javascript" src="js/lpsteda-lp.js"></script>
   <script type="text/javascript" src="js/lpsteda-ac.js"></script>
   <script type="text/javascript" src="js/lpsteda.js"></script>
+  <script type="text/javascript" src="js/lpsteda-ds.js"></script>
 
 
 
@@ -96,12 +97,36 @@
   </nav>
   <div class="row" id="content" style="">
     <div class="col-md-6" id="codeEditor">
-      <div class="panel">
-            <div id="codeEntry">
-              <textarea id="codeData" ></textarea>
-            </div>                      
+        <div class="dropdown">
+          <label>Select Dataset</label>
+          <select class="form-control" id="dataDropDown" onchange="setData()">
+            <option value="one">One</option>
+            <option value="two">Two</option>
+            <option value="three">Three</option>
+            <option value="four">Four</option>
+            <option value="five">Five</option>
+          </select>
+        </div>
+        <div style="padding-top: 10px; padding-bottom: 10px;">
+          <button id="startButton" type="button" class="btn btn-primary" id="startButton" onclick="start()">Start Test</button>
+          <label>At Speed</label>
+          <div class="btn-group" id="testSpeed" onchange="setSpeed()">
+            <button type="button" class="btn btn-primary" id="speed1" onclick="setSpeed(1)">x1</button>
+            <button type="button" class="btn btn-secondary" id="speed2" onclick="setSpeed(2)">x2</button>
+            <button type="button" class="btn btn-secondary" id="speed3" onclick="setSpeed(3)">x3</button>
           </div>
-          <div class="alert alert-info" id="pmsg">Write your code in the above space</div> 
+        </div>
+        <div class="progress">
+          <div id="timerProgress" class="progress-bar progress-bar-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+            <span class="sr-only"></span>
+          </div>
+        </div>
+      <div class="panel">
+        <div id="codeEntry">
+          <textarea id="codeData" ></textarea>
+        </div>                      
+      </div>
+      <div class="alert alert-info" id="pmsg">Write your code in the above space</div> 
     </div>
     <div class="col-md-6" id="outputVis" style=""></div>
     <iframe src="" id="sandbox" sandbox></iframe>
