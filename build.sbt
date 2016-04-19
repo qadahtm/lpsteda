@@ -40,6 +40,7 @@ libraryDependencies ++= Seq(
   "io.spray"           %% "spray-routing"    % "1.3.2",
   "io.spray"           %% "spray-httpx"    % "1.3.2",
   "io.spray"           %% "spray-json"       % "1.3.0",
+  "org.scalatest" 	   %% "scalatest" % "2.2.6" % "test",
   "joda-time"		    % "joda-time" 		% "latest.integration",
   "org.joda" 			% "joda-convert" 	% "latest.integration",
   "log4j" % "log4j" % "1.2.14"

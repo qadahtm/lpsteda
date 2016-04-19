@@ -36,19 +36,30 @@
   <link rel="stylesheet" href="cm/addon/hint/show-hint.css" />
   <script src="cm/addon/hint/show-hint.js"></script>
 
-
   <!-- LeafletJS -->
   <link rel="stylesheet" href="leaflet.css" />
   <script src="js/leaflet.js"></script>
   <script type="text/javascript" src="js/Leaflet.MakiMarkers.js"></script>
 
+  <!-- Vega -->
+  <script src="js/d3.min.js"></script>
+  <script src="js/d3.geo.projection.min.js"></script>
+  <script src="js/topojson.js"></script>
+  <script src="js/d3.layout.cloud.js"></script>
+  <script src="js/vega.min.js"></script>
+
+
   <!-- LPSTEDA -->
+  <script type="text/javascript" src="js/globalVars.js"></script>
   <script type="text/javascript" src="js/api.js"></script>
   <link rel="stylesheet" href="css/lpsteda.css" />
   <script type="text/javascript" src="js/lpsteda-vega.js"></script>
+
   <script type="text/javascript" src="js/lpsteda-cm.js"></script>
   <script type="text/javascript" src="js/lpsteda-lp.js"></script>
+
   <script type="text/javascript" src="js/lpsteda.js"></script>
+  
 
 
 
@@ -57,6 +68,8 @@
     $(document).ready(function() {
       // fetch all active streams and populate table
       // $('#hello').html("hello");
+      // parse a spec and create a visualization view
+
 
       });
 
@@ -68,7 +81,7 @@
 </head>
 <body>
   <div class="container">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
@@ -89,19 +102,27 @@
               </ul>
             </li>
           </ul>
-        </div><!--/.nav-collapse -->    
-  </nav>
+        </div>
+        <!--/.nav-collapse -->    
+  </div>
   <div class="row" id="content" style="">
     <div class="col-md-6" id="codeEditor">
       <div class="panel">
             <div id="codeEntry">
-              <textarea id="codeData" ></textarea>
+              <textarea id="codeData"></textarea>
             </div>                      
           </div>
           <div class="alert alert-info" id="pmsg">Write your code in the above space</div> 
     </div>
-    <div class="col-md-6" id="outputVis" style=""></div>
-    <!-- <iframe src="" id="sandbox" sandbox></iframe> -->
+    <div class="col-md-6"  style="">
+      <div class="row">
+        <div class="col-md-12" id="vis"></div>
+      </div>
+      <div class="row" >
+        <div class="col-md-12" id="outputVis"></div>
+      </div>
+    </div>
+    <!-- <iframe src="" id="sandbox" sandbox></iframe> -->    
   </div>
   </div>
   

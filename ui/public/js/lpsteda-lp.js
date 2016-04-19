@@ -1,48 +1,49 @@
+function loadDataFromServer(){
+	var url = "data/seattle911.json";
+	$.getJSON( url, function( data ) {
+		MIV.data = data;
+		// console.log(data);	
+	});
+}
+
 function initLPSupport(){
 
 	editor.on("change", function(cm,o){
 		var lpos = o.from.line;
 		MIV.currentLine = lpos;
-		var lh = cm.doc.getLine(lpos);
-		// var sb = $()
-		console.log(lh);	
+		console.log(o);
+			
 		try{
-			// evaluate each line in the code
-			// cm.doc.eachLine(function(lh){
-				
-				
-			// });
+			// evaluate the changed line in the code
 
-			var s = lh.text;
+			var s = cm.doc.getLine(lpos);
 			// what if there multiple statements in a line
-			console.log("line "+lpos+" is "+s);
+			// console.log("line "+lpos+" is "+s);
 			if (MIV.O[lpos] == undefined){
-				console.log("new at "+lpos);
+				// console.log("new at "+lpos);
 				var obj =  window.eval(s); // evaluate globally
 				MIV.O[lpos] = {text:s, obj:obj};	
-				console.log(obj);
+				// console.log(obj);
 			}
 			if (MIV.O[lpos].text !== s){
 				// modified code
-				console.log("modifed at "+lpos);
+				// console.log("modifed at "+lpos);
 				if (MIV.O[lpos].obj){
 					// remove old					
 					MIV.map.removeLayer(MIV.O[lpos].obj);
-					console.log("going to eval:"+s);
+					// console.log("going to eval:"+s);
 					var obj =  window.eval(s); // evaluate globally
-					console.log("obj is :"+obj);
-					console.log(obj);
 					MIV.O[lpos] = {text:s, obj:obj};		
 				}
 				else {
-					console.log("old object is not valid");
+					// console.log("old object is not valid");
 					var obj =  window.eval(s); // evaluate globally
 					MIV.O[lpos] = {text:s, obj:obj};							
 				}
 			}
 			else {
 				// same code
-				console.log("same at "+lpos);
+				// console.log("same at "+lpos);
 			}
 			
 		}
