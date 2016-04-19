@@ -1,5 +1,6 @@
 var curSpeed = 1;
 var curDataSet = "";
+var id;
 
 function initDSSupport(){
 
@@ -21,16 +22,17 @@ function setSpeed(x){
 		var s = document.getElementById("speed" + i).className = "btn btn-secondary";
 	}
 	var s = document.getElementById("speed" + x).className = "btn btn-primary";
+	start();
 }
 
 function start(){
+	clearInterval(id);
 	var progressBar = document.getElementById("timerProgress");
 	var startTime = new Date().getTime();
 	var i = 0;
-	width = 1;
+	var width = 0;
 	var playTime = 40000 / curSpeed;
-	var endTime = startTime + playTime;
-	var id = setInterval(frame, playTime/100);
+	id = setInterval(frame, playTime/100);
 	function frame() {
 	    if (width >= 100) {
 	    	clearInterval(id);
@@ -42,7 +44,7 @@ function start(){
 	}
 
 	function plotDataPoints() {
-		
+
 		i++;
 	}
 }
