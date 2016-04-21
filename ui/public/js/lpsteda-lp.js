@@ -3,6 +3,7 @@ function loadDataFromServer(){
 	$.getJSON( url, function( data ) {
 		MIV.data = data;
 		// console.log(data);	
+		$("#dataDropDown").append("<option value=\"1\">Seattle 911 Fire Calls</option>")
 	});
 }
 

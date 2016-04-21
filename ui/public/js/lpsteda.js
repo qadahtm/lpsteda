@@ -13,7 +13,11 @@ $(document).ready(function(){
 	// CM
 	initializeCM();
 
+	initializeAC();
+
 	initLPSupport();
+
+	initDSSupport();
 
 	// load data 
 	loadDataFromServer();	
