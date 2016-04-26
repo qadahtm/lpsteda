@@ -1,7 +1,3 @@
-var editor;
-var MIV = {};
-MIV.O = [];
-
 MIV.marker = {"at":function(lat,lng){
 	// console.log(lat);
 	// console.log(lng);
@@ -17,9 +13,22 @@ $(document).ready(function(){
 	// CM
 	initializeCM();
 
-	initLPSupport();
+	initializeAC();
+
+	if (MIV.LP){
+		console.log("activating LP");
+		initLPSupport();	
+	}
+
+	initMapSupport();
 	
-	
+
+	initDSSupport();
+
+	// load data 
+	loadDataFromServer();	
+
+	// setData();
 
 });
 

@@ -33,13 +33,16 @@ resolvers ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  "com.typesafe.akka"  %% "akka-actor"       % "2.3.6",
-  "com.typesafe.akka"  %% "akka-slf4j"       % "2.3.6",
-  "com.typesafe.akka"  %% "akka-remote"       % "2.3.6",
-  "io.spray"           %% "spray-can"        % "1.3.2",
-  "io.spray"           %% "spray-routing"    % "1.3.2",
-  "io.spray"           %% "spray-httpx"    % "1.3.2",
-  "io.spray"           %% "spray-json"       % "1.3.0",
+  "com.typesafe.akka"  %% "akka-actor"      % "2.3.6",
+  "com.typesafe.akka"  %% "akka-slf4j"      % "2.3.6",
+  "com.typesafe.akka"  %% "akka-remote"     % "2.3.6",
+  "io.spray"           %% "spray-can"       % "1.3.2",
+  "io.spray"           %% "spray-routing"   % "1.3.2",
+  "io.spray"           %% "spray-httpx"    	% "1.3.2",
+  "io.spray"           %% "spray-json"      % "1.3.0",
+  "org.scalatest" 	   %% "scalatest" 		% "2.2.6" % "test",
+  "com.twitter" 		% "hbc-core" 		% "2.2.0",
+  "com.twitter" 		% "hbc-twitter4j" 	% "2.2.0",  
   "joda-time"		    % "joda-time" 		% "latest.integration",
   "org.joda" 			% "joda-convert" 	% "latest.integration",
   "log4j" % "log4j" % "1.2.14"

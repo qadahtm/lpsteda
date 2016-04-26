@@ -31,6 +31,10 @@ import spray.json.JsNumber
 import spray.json.DefaultJsonProtocol
 import spray.json.RootJsonFormat
 import spray.json.DeserializationException
+import scala.io.Source
+import java.io.PrintWriter
+import scala.collection.mutable.ListBuffer
+import spray.json.JsArray
 
 object Helper {
 
@@ -69,4 +73,118 @@ object Helper {
 
   }
 
+}
+
+object DataUtils {
+  def converToJsonTuple911(_in_fname: String, _out_fname: String) = {
+    val in = Source.fromFile(_in_fname)
+    val out = new PrintWriter(new File(_out_fname))
+
+    //    3236 Sw Avalon Way,Aid Response,04/19/2016 04:23:00 AM +0000,47.564398,-122.372799,"(47.564398, -122.372799)",F160043733
+
+    val res = ListBuffer[JsObject]()
+
+    for (line <- in.getLines()) {
+      val sline = line.split(",")
+      val address = sline(0)
+      val callType = sline(1)
+      val datetime = sline(2)
+      val lat = sline(3)
+      val lng = sline(4)
+      val rlat = sline(5).substring(2, sline(5).size)
+      val rlng = sline(6).substring(0, sline(6).size - 2)
+      val inumber = sline(7)
+
+//      println(s"address: ${address}")
+//      println(s"callType: ${callType}")
+//      println(s"datetime: ${datetime}")
+//      println(s"lat: ${lat}")
+//      println(s"lng: ${lng}")
+//      println(s"rlat: ${rlat}")
+//      println(s"rlng: ${rlng}")
+//      println(s"inumber: ${inumber}")
+      
+      
+      try {
+        val jsmap = Map("address" -> JsString(address),
+          "text" -> JsString(callType),
+          "datatime" -> JsString(datetime),
+          "lat" -> JsNumber(lat.toFloat),
+          "lng" -> JsNumber(lng.toFloat),
+          "rlat" -> JsNumber(rlat.toFloat),
+          "rlng" -> JsNumber(rlng.toFloat),
+          "inumber" -> JsString(inumber))
+        res += JsObject(jsmap)
+
+      } catch {
+        case t: Throwable => {
+          // do nothing
+//          t.printStackTrace()
+        } // TODO: handle error
+      }
+
+    }
+    
+    val fres = JsArray(res.toVector).toString()
+    out.println(fres)
+    out.close()
+    
+    println(s"generated ${res.size} tuples")
+  }
+  
+  def converToJsonTuple911ir(_in_fname: String, _out_fname: String) = {
+    val in = Source.fromFile(_in_fname)
+    val out = new PrintWriter(new File(_out_fname))
+
+    //    15736,FIGHT DISTURBANCE,7/17/2010 20:49,3XX BLOCK OF PINE ST,-122.3381467,47.61097516,"(47.610975163, -122.338146748)"
+
+    val res = ListBuffer[JsObject]()
+
+    for (line <- in.getLines()) {
+      val sline = line.split(",")
+      val inumber = sline(0)
+      val text = sline(1)
+      val datetime = sline(2)
+      val address = sline(3)
+      val lat = sline(5)
+      val lng = sline(4)
+      val rlat = sline(6).substring(2, sline(6).size)
+      val rlng = sline(7).substring(0, sline(7).size - 2)
+      
+//      println(s"address: ${address}")
+//      println(s"callType: ${callType}")
+//      println(s"datetime: ${datetime}")
+//      println(s"lat: ${lat}")
+//      println(s"lng: ${lng}")
+//      println(s"rlat: ${rlat}")
+//      println(s"rlng: ${rlng}")
+//      println(s"inumber: ${inumber}")
+      
+      
+      try {
+        val jsmap = Map("address" -> JsString(address),
+          "text" -> JsString(text),
+          "datatime" -> JsString(datetime),
+          "lat" -> JsNumber(lat.toFloat),
+          "lng" -> JsNumber(lng.toFloat),
+          "rlat" -> JsNumber(rlat.toFloat),
+          "rlng" -> JsNumber(rlng.toFloat),
+          "inumber" -> JsString(inumber))
+        res += JsObject(jsmap)
+
+      } catch {
+        case t: Throwable => {
+          // do nothing
+//          t.printStackTrace()
+        } // TODO: handle error
+      }
+
+    }
+    
+    val fres = JsArray(res.toVector).toString()
+    out.println(fres)
+    out.close()
+    
+    println(s"generated ${res.size} tuples")
+  }
 }

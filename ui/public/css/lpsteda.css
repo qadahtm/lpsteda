@@ -3,9 +3,20 @@
 }
 .CodeMirror{
 	border:solid black;
-	height: 645px;
+	height: 410px;
 }
 
 #outputVis{
-	height: 720px;
+	/*height: 720px;*/
+	height: 411px;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;        
+}
+
+.hidden{
+	display: none;
 }

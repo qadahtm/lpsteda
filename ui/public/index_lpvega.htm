@@ -35,25 +35,35 @@
   <script src="cm/mode/javascript/javascript.js"></script>
   <link rel="stylesheet" href="cm/addon/hint/show-hint.css" />
   <script src="cm/addon/hint/show-hint.js"></script>
-  <script src="cm/addon/hint/javascript-hint.js"></script>
-  <link rel="stylesheet" href="cm/addon/dialog/dialog.css" />
-  <script src="cm/addon/dialog/dialog.js"></script>
-
 
   <!-- LeafletJS -->
   <link rel="stylesheet" href="leaflet.css" />
   <script src="js/leaflet.js"></script>
   <script type="text/javascript" src="js/Leaflet.MakiMarkers.js"></script>
 
+  <!-- Vega -->
+  <script src="js/d3.min.js"></script>
+  <script src="js/d3.geo.projection.min.js"></script>
+  <script src="js/topojson.js"></script>
+  <script src="js/d3.layout.cloud.js"></script>
+  <script src="js/vega.min.js"></script>
+  <!--  <script type="text/javascript" src="js/Queue.js"></script> -->
+
+
   <!-- LPSTEDA -->
+  <script type="text/javascript" src="js/globalVars.js"></script>
   <script type="text/javascript" src="js/api.js"></script>
   <link rel="stylesheet" href="css/lpsteda.css" />
   <script type="text/javascript" src="js/lpsteda-vega.js"></script>
+
   <script type="text/javascript" src="js/lpsteda-cm.js"></script>
   <script type="text/javascript" src="js/lpsteda-lp.js"></script>
   <script type="text/javascript" src="js/lpsteda-ac.js"></script>
+
   <script type="text/javascript" src="js/lpsteda.js"></script>
+
   <script type="text/javascript" src="js/lpsteda-ds.js"></script>
+  
 
 
 
@@ -62,6 +72,8 @@
     $(document).ready(function() {
       // fetch all active streams and populate table
       // $('#hello').html("hello");
+      // parse a spec and create a visualization view
+
 
       });
 
@@ -73,7 +85,7 @@
 </head>
 <body>
   <div class="container">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
@@ -94,43 +106,73 @@
               </ul>
             </li>
           </ul>
-        </div><!--/.nav-collapse -->    
-  </nav>
-  <div class="row" id="content" style="">
-    <div class="col-md-6" id="codeEditor">
-        <div class="dropdown">
-          <label>Select Dataset</label>
-          <select class="form-control" id="dataDropDown" onchange="setData()">
-            <option value="one">One</option>
-            <option value="two">Two</option>
-            <option value="three">Three</option>
-            <option value="four">Four</option>
-            <option value="five">Five</option>
-          </select>
         </div>
-        <div style="padding-top: 10px; padding-bottom: 10px;">
-          <button id="startButton" type="button" class="btn btn-primary" id="startButton" onclick="start()">Start Test</button>
-          <label>At Speed</label>
-          <div class="btn-group" id="testSpeed" onchange="setSpeed()">
-            <button type="button" class="btn btn-primary" id="speed1" onclick="setSpeed(1)">x1</button>
-            <button type="button" class="btn btn-secondary" id="speed2" onclick="setSpeed(2)">x2</button>
-            <button type="button" class="btn btn-secondary" id="speed3" onclick="setSpeed(3)">x3</button>
+        <!--/.nav-collapse -->    
+  </div>
+  <div class="row" id="content" style="">
+    <div class="col-md-6 panel">
+      <div class="dropdown row panel" style="height: 4em;">
+          <div class="col-md-6">
+
+            <label>Select Dataset</label>
+            <select class="form-control" id="dataDropDown" onchange="setData()">
+             <!--  <option value="one">One</option>
+              <option value="two">Two</option>
+              <option value="three">Three</option>
+              <option value="four">Four</option>
+              <option value="five">Five</option> -->
+            </select>
+          </div>
+          <div class="col-md-6">
+            <div class="btn-group vcenter" id="swSsize">
+              <button id="startButton" type="button" class="btn btn-primary" onclick="startStream()">
+                Start Stream
+              </button>
+              <button id="stopButton" type="button" class="btn btn-primary" onclick="stopStream()">
+                Stop Stream
+              </button> 
+            </div>            
+          </div>
+      </div>
+        <div class="row panel">
+          <div class="col-md-6">
+          <label>Stream Speed</label>
+            <div class="btn-group" id="testSpeed" onchange="setSpeed()">
+              <button type="button" class="btn btn-primary" id="speed1" onclick="setSpeed(1)">x1</button>
+              <button type="button" class="btn btn-secondary" id="speed2" onclick="setSpeed(2)">x2</button>
+              <button type="button" class="btn btn-secondary" id="speed3" onclick="setSpeed(3)">x3</button>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label>Window Size</label>
+            <div class="btn-group" id="swSsize" onchange="setSpeed()">
+              <button type="button" class="btn btn-primary" id="size50" onclick="setSize(50)">50</button>
+              <button type="button" class="btn btn-secondary" id="size100" onclick="setSize(100)">100</button>
+              <button type="button" class="btn btn-secondary" id="size200" onclick="setSize(200)">200</button>
+            </div>
           </div>
         </div>
-        <div class="progress">
+        <div class="progress row">
           <div id="timerProgress" class="progress-bar progress-bar-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
             <span class="sr-only"></span>
           </div>
         </div>
-      <div class="panel">
+      <div class="panel row" id="codeEditor">
         <div id="codeEntry">
-          <textarea id="codeData" ></textarea>
+          <textarea id="codeData"></textarea>
         </div>                      
       </div>
-      <div class="alert alert-info" id="pmsg">Write your code in the above space</div> 
+      <div class="row alert alert-info" id="pmsg">Write your code in the above space</div> 
     </div>
-    <div class="col-md-6" id="outputVis" style=""></div>
-    <!-- <iframe src="" id="sandbox" sandbox></iframe> -->
+    <div class="col-md-6 panel"  style="">
+      <div class="row">
+        <div class="col-md-12" id="vis"></div>
+      </div>
+      <div class="row" >
+        <div class="col-md-12" id="outputVis"></div>
+      </div>
+    </div>
+    <!-- <iframe src="" id="sandbox" sandbox></iframe> -->    
   </div>
   </div>
   
