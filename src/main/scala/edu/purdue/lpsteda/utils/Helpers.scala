@@ -99,13 +99,18 @@ class TwitterAPIConsumer() extends Runnable {
 //    println("consumerSecret:"+conf.getString("twitter.api.consumerSecret"))
 //    println("token:"+conf.getString("twitter.api.token"))
 //    println("secret:"+conf.getString("twitter.api.secret"))
-    TwitterUtils.consume(conf.getString("twitter.api.consumerKey"),
+    
+    if (conf.getBoolean("twitter.api.enabled")){
+      println("Enableing Twitter streaming consumption!!!!")
+      TwitterUtils.consume(conf.getString("twitter.api.consumerKey"),
                         conf.getString("twitter.api.consumerSecret"), 
                         conf.getString("twitter.api.token"), 
                         conf.getString("twitter.api.secret"))
-                        
-    println("Consuming done!!!!")
-    
+      println("Consuming done!!!!")
+    }
+    else {
+      println("Twitter API is disabled!!!!")
+    }    
   }
 }
 
