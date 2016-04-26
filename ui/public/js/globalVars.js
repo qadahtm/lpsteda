@@ -16,6 +16,17 @@ var catColors8 = ['#556270', '#FF6B6B', '#4ECDC4', '#C7F464', '#C44D58', '#ECD07
 var catColorRandom27 = randomColor({luminosity: 'light',count: 27});
 var catColors = catColors8;
 
+
+// Map Bounds
+// USA bounds
+
+var usa_southWest = L.latLng(2.811, -147.48);
+var usa_northEast = L.latLng(59.8, -45);
+var usa_bounds = L.latLngBounds(usa_southWest, usa_northEast);
+
+// Seattle
+var seattleCenter = L.latLng(47.673, -122.354);
+
 function getCatColor(cat){
 	return catColors[MIV.cats.indexOf(cat)];
 }

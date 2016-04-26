@@ -41,6 +41,7 @@ libraryDependencies ++= Seq(
   "io.spray"           %% "spray-httpx"    	% "1.3.2",
   "io.spray"           %% "spray-json"      % "1.3.0",
   "org.scalatest" 	   %% "scalatest" 		% "2.2.6" % "test",
+  "org.slf4j" 			% "slf4j-api" 		% "1.7.12",
   "com.twitter" 		% "hbc-core" 		% "2.2.0",
   "com.twitter" 		% "hbc-twitter4j" 	% "2.2.0",  
   "joda-time"		    % "joda-time" 		% "latest.integration",
