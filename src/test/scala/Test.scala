@@ -13,6 +13,7 @@ class TestAndPlay extends FlatSpec with Matchers {
       val res = true
       
       DataUtils.converToJsonTuple911("ui/public/data/seattle911.csv", "testout.json")
+      DataUtils.converToJsonTuple911ir("ui/public/data/seattle911ir3.csv", "testout2.json")
       
       
       res should be (true)

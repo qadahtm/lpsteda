@@ -15,12 +15,20 @@ $(document).ready(function(){
 
 	initializeAC();
 
-	initLPSupport();
+	if (MIV.LP){
+		console.log("activating LP");
+		initLPSupport();	
+	}
+
+	initMapSupport();
+	
 
 	initDSSupport();
 
 	// load data 
 	loadDataFromServer();	
+
+	// setData();
 
 });
 

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>LPSTEDA</title>
+
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  
+  <style type="text/css">
+    html { height: 100% }
+    body { height: 100%; margin: 0; padding: 0 }
+    #map-canvas { height: 100% }
+  </style>
+
+  <link href="css/jquery-ui.min.css" rel="stylesheet">
+  <script src="js/jquery.js"></script>
+  <script type="text/javascript" src="js/jquery.json.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+  
+  <!-- CodeMirror -->
+  <script src="cm/lib/codemirror.js"></script>
+  <link rel="stylesheet" href="cm/lib/codemirror.css">
+  <link rel="stylesheet" href="cm/theme/neat.css">
+  <script src="cm/mode/javascript/javascript.js"></script>
+  <link rel="stylesheet" href="cm/addon/hint/show-hint.css" />
+  <script src="cm/addon/hint/show-hint.js"></script>
+
+  <!-- LeafletJS -->
+  <link rel="stylesheet" href="leaflet.css" />
+  <script src="js/leaflet.js"></script>
+  <script src="js/turf.min.js"></script>
+  <script type="text/javascript" src="js/Leaflet.MakiMarkers.js"></script>
+
+  <!-- Vega -->
+  <script src="js/d3.min.js"></script>
+  <script src="js/d3.geo.projection.min.js"></script>
+  <script src="js/topojson.js"></script>
+  <script src="js/d3.layout.cloud.js"></script>
+  <script src="js/vega.min.js"></script>
+  <script src="js/randomColor.js"></script>
+  <!--  <script type="text/javascript" src="js/Queue.js"></script> -->
+
+
+  <!-- LPSTEDA -->
+  <script type="text/javascript" src="js/globalVars.js"></script>
+  <script type="text/javascript" src="js/api.js"></script>
+  <link rel="stylesheet" href="css/lpsteda.css" />
+  <script type="text/javascript" src="js/lpsteda-vega.js"></script>
+
+  <script type="text/javascript" src="js/lpsteda-cm.js"></script>
+  <script type="text/javascript" src="js/lpsteda-lp.js"></script>
+  <script type="text/javascript" src="js/lpsteda-ac.js"></script>
+  <script type="text/javascript" src="js/lpsteda-spatial.js"></script>
+
+  <script type="text/javascript" src="js/lpsteda.js"></script>
+
+
+  <script type="text/javascript" src="js/lpsteda-ds.js"></script>
+  
+
+
+
+  <script type="text/javascript">
+
+    $(document).ready(function() {
+      $('#compileandrun').click(
+        function(){
+          // console.log("compile and run");
+          compileAndRun();
+        });
+
+      });
+    MIV.LP = false;
+</script>
+
+<style type="text/css">
+</style>
+
+</head>
+<body>
+  <div class="container">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">LPSTEDA</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">     
+            <li><a href="index_lp.htm">Live Programming Version</a></li>
+            <!-- <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Code Examples <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Simple Example</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a id="cex1" href="#">Complex Example</a></li>
+              </ul>
+            </li> -->
+          </ul>
+        </div>
+        <!--/.nav-collapse -->    
+  </div>
+  <div class="row" id="content" style="">
+    <div class="col-md-6 panel">
+      <div class="row panel"  >
+          <div class="col-md-6">
+            <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Select a Dataset
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" id="dataDropDown"  aria-labelledby="dropdownMenu1">
+              </ul>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-body" >
+                <label id="selectedDS">Please select a data set first. </label>
+                <div class="btn-group vcenter hidden" id="scontrol">
+                  <button id="startButton" type="button" class="btn btn-primary" onclick="startStream()">
+                    Start Stream
+                  </button>
+                  <button id="stopButton" type="button" class="btn btn-primary" onclick="stopStream()">
+                    Stop Stream
+                  </button> 
+              </div>      
+              </div>
+            </div>
+            <!-- <label>Select Dataset</label>
+            <select class="form-control" id="dataDropDown" onchange="setData()">
+            </select> -->
+          </div>
+          <div class="col-md-6">
+            <div class="panel">
+                <label>Stream Speed</label>
+                <div class="btn-group" id="testSpeed" onchange="setSpeed()">
+                  <button type="button" class="btn btn-primary" id="speed1" onclick="setSpeed(1)">x1</button>
+                  <button type="button" class="btn btn-secondary" id="speed2" onclick="setSpeed(2)">x2</button>
+                  <button type="button" class="btn btn-secondary" id="speed3" onclick="setSpeed(3)">x3</button>
+                </div>
+              </div>
+              <div class="panel">
+                <label>Window Size</label>
+                <div class="btn-group" id="swSsize" onchange="setSpeed()">
+                  <button type="button" class="btn btn-primary" id="size50" onclick="setSize(50)">50</button>
+                  <button type="button" class="btn btn-secondary" id="size100" onclick="setSize(100)">100</button>
+                  <button type="button" class="btn btn-secondary" id="size200" onclick="setSize(200)">200</button>
+                </div>
+            </div>
+          </div>
+      </div>
+<!--         <div class="row panel" style="margin-top:7em">
+          <div class="col-md-6">
+          
+          </div>
+          
+        </div> -->
+        <div class="progress row">
+          <div id="timerProgress" class="progress-bar progress-bar-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+            <span class="sr-only"></span>
+          </div>
+        </div>
+      <div class="panel row" id="codeEditor">
+        <div id="codeEntry">
+          <textarea id="codeData"></textarea>
+        </div>                      
+      </div>
+            <div class="row">
+        <div class="col-md-9 alert alert-info" id="pmsg">Write your code in the above space</div> 
+        <div class="col-md-3">
+          <button class="btn-primary" id="compileandrun">Run Code</button>
+        </div>
+    </div>  
+    </div>
+    <div class="col-md-6 panel"  style="">
+      <div class="row">
+        <div class="col-md-12" id="vis"></div>
+      </div>
+      <div class="row" >
+        <div class="col-md-12" id="outputVis"></div>
+      </div>
+    </div>
+    <!-- <iframe src="" id="sandbox" sandbox></iframe> -->    
+  </div>
+  </div>
+  
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="js/bootstrap.min.js"></script>
+  
+</body>
+</html>
