@@ -1,5 +1,5 @@
 /*
-   Copyright 2014 - Thamir Qadah
+   Copyright 2016 - Thamir Qadah
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -35,6 +35,20 @@ import scala.io.Source
 import java.io.PrintWriter
 import scala.collection.mutable.ListBuffer
 import spray.json.JsArray
+import java.util.concurrent.LinkedBlockingQueue
+import com.twitter.hbc.core._
+import com.twitter.hbc.core.endpoint.StatusesFilterEndpoint
+import com.twitter.hbc.core.endpoint.Location
+import com.twitter.hbc.core.endpoint.Location.Coordinate
+import com.twitter.hbc.httpclient.auth.OAuth1
+import com.twitter.hbc.ClientBuilder
+import com.twitter.hbc.core.processor.StringDelimitedProcessor
+import com.twitter.hbc.httpclient.auth.Authentication
+import com.twitter.hbc.httpclient.auth.OAuth1
+import java.util.ArrayList
+import spray.json.JsonParser
+import spray.json.JsNull
+import spray.json.JsBoolean
 
 object Helper {
 
@@ -73,6 +87,150 @@ object Helper {
 
   }
 
+}
+
+
+class TwitterAPIConsumer() extends Runnable {
+  val conffile = new File("twitter.conf")
+  val conf = ConfigFactory.parseFile(conffile)
+  
+  def run() {
+//    println("consumerKey:"+conf.getString("twitter.api.consumerKey"))
+//    println("consumerSecret:"+conf.getString("twitter.api.consumerSecret"))
+//    println("token:"+conf.getString("twitter.api.token"))
+//    println("secret:"+conf.getString("twitter.api.secret"))
+    TwitterUtils.consume(conf.getString("twitter.api.consumerKey"),
+                        conf.getString("twitter.api.consumerSecret"), 
+                        conf.getString("twitter.api.token"), 
+                        conf.getString("twitter.api.secret"))
+                        
+    println("Consuming done!!!!")
+    
+  }
+}
+
+object TwitterUtils {
+ 
+  val bqueue = new LinkedBlockingQueue[String](10000)
+  val geotagged = new LinkedBlockingQueue[String](10000)
+  
+  def getATweetSync() = geotagged.take()
+  
+  def getATweetAsync() = geotagged.poll()
+  
+  def consume(consumerKey:String, consumerSecret:String, token:String, secret:String) : Unit = {
+    
+    val endpoint = new StatusesFilterEndpoint()
+    // New York -74,40,-73,41
+    // USA: w:-125.51, n: 49.44, e:-66.45. s:23.81
+    
+    val ny_sw = new Coordinate(-74D,40D)
+    val ny_ne = new Coordinate(-73D,41D)
+    val ny_loc = new Location(ny_sw,ny_ne)
+    
+    val usa_sw = new Coordinate(-125.51D,23.81D)
+    val usa_ne = new Coordinate(-66.45D,49.44D)
+    val usa_loc = new Location(usa_sw,usa_ne)
+    
+    val locs = new ArrayList[Location]();
+    
+    locs.add(usa_loc)
+    endpoint.locations(locs)
+    
+//    val terms = new ArrayList[String]();
+    
+//    terms.add("Purdue");
+//    endpoint.trackTerms(terms)
+    
+    val auth:Authentication = new OAuth1(consumerKey, consumerSecret, token, secret);
+    val client  = new ClientBuilder()
+            .hosts(Constants.STREAM_HOST)
+            .endpoint(endpoint)
+            .authentication(auth)
+            .processor(new StringDelimitedProcessor(bqueue))
+            .build();
+
+    // Establish a connection
+    println("Connecting to twitter ...")
+    client.connect();
+    println("Connected.")
+    
+    
+    val bufferMax = 4000
+    val bufferSize = 1000
+    while (true){
+      var tdc = 0
+      var discard = false;
+      
+      var i = 0
+      var ctweet = bqueue.poll()
+      while (ctweet != null && i < bufferSize){
+        val tjo = JsonParser(ctweet).asJsObject
+        val coos = tjo.fields.get("coordinates")
+        coos match {
+          case Some(t) => {
+            val jsnull = JsNull
+//            println(jsnull.getClass.getName)
+//            println(t.getClass.getName)
+            if (!t.getClass().getName().equalsIgnoreCase((jsnull.getClass().getName()))){
+//              println(ctweet)
+             
+              val createdAt = tjo.fields.get("created_at").get.asInstanceOf[JsString]
+              val idstr = tjo.fields.get("id_str").get.asInstanceOf[JsString]
+              val text =  tjo.fields.get("text").get.asInstanceOf[JsString]
+//              println(t)
+              val carr = t.asJsObject.fields.get("coordinates").get.asInstanceOf[JsArray]
+              val lng = carr.elements(0)
+              val lat = carr.elements(1)
+              val res = JsObject("created_at" -> createdAt,
+                  "idstr" -> idstr,
+                  "text" -> text,
+                  "lat" -> lat,
+                  "lng" -> lng,
+                  "valid" -> JsBoolean(true)
+                        )
+              geotagged.add(res.toString())
+            }
+          }
+          case _ => {}
+        }
+        
+        i = i + 1
+        ctweet = bqueue.poll()
+        
+      }
+    
+      // discard tweets if buffer max is reached
+      while (bqueue.size() > bufferMax){
+        bqueue.take()
+        tdc = tdc + 1
+        discard = true
+      }
+      if (discard) {
+        println(s"discarded ${tdc} tweets from bqueue")
+        tdc = 0
+        discard = false;
+      }
+      
+      while (geotagged.size() > bufferMax){
+        geotagged.take()
+        tdc = tdc + 1
+        discard = true
+      }
+      if (discard) {
+        println(s"discarded ${tdc} tweets from geotagged")
+        tdc = 0
+        discard = false;
+      }
+      
+//      println("Sleeping for 100 msecs")
+      Thread.sleep(100) // sleep for 10 secs
+//      println(s"current bqueue buff size = ${bqueue.size()}")
+//      println(s"current geo buff size = ${geotagged.size()}")
+    }
+    
+  }
+  
 }
 
 object DataUtils {

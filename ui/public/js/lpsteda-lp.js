@@ -13,7 +13,7 @@ function loadDataFromServer(){
 		$("#dataDropDown").append("<li value=\"0\"><a id='s911calls' href=\"#\">Seattle 911 Calls</a></li>");
 		$('#s911calls').click(function(){
 			$('#selectedDS').html("Seattle 911 Calls Dataset");
-			console.log(di);
+			// console.log(di);
 			setData(di);
 			$('#scontrol').removeClass('hidden');
 		});
@@ -26,10 +26,19 @@ function loadDataFromServer(){
 		$("#dataDropDown").append("<li value=\"1\"><a id='s911callsir' href=\"#\">Seattle 911 Incidents</a></li>");
 		$('#s911callsir').click(function(){
 			$('#selectedDS').html("Seattle 911 Incidents Dataset");			
-			console.log(di);
+			// console.log(di);
 			setData(di);		
 			$('#scontrol').removeClass('hidden');				
 		});
+	});
+
+	// Twitter stream
+	var di = 2;
+	$("#dataDropDown").append("<li value=\"0\"><a id='livetwitter' href=\"#\">Live Twitter Stream</a></li>");
+	$('#livetwitter').click(function(){
+		$('#selectedDS').html("Live Twitter Stream");
+		setData(di);
+		$('#scontrol').removeClass('hidden');
 	});
 }
 
@@ -40,7 +49,7 @@ function compileAndRun(){
 	for (var i = 0; i < cm.doc.lineCount(); i++) {
 		var s = cm.doc.getLine(i);
 		var lpos = i;
-		console.log(s);
+		// console.log(s);
 		if (MIV.O[lpos] == undefined){
 			// console.log("new at "+lpos);
 			var obj =  window.eval(s); // evaluate globally

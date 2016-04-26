@@ -16,11 +16,26 @@ Scripts for launching the webserver will be avaible in `./target/pack/bin` direc
 ### Windows
 You will need sbt installed. Refer to the following url: http://www.scala-sbt.org/release/tutorial/Installing-sbt-on-Windows.html
 
-## External API
+## External APIs
+
+### Mapbox API Configuration
 Some code requires API access to some online web services. For example, we (currently) use  Mapbox for tile dataset. You need to create a file called `api.js` and place it in the `ui/public/js` directory
 ```javascript
 var mapboxapi = {
 	accessToken: "your access token",
 	pid: "your project id"
 	};
+```
+
+### Twitter API configuration
+
+To make the live twitter streaming work, you need to create a file called `twitter.conf` with following content having the approiate values for your Twitter's API credentials. This config file should be placed in the same direcotry of the project.
+
+```
+twitter.api {
+	consumerKey = "your consumer key here", 
+	consumerSecret= "your consumer secret here",
+	token = "your access token here", 
+	secret = "your access token secret here" 
+}
 ```

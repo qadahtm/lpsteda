@@ -6,7 +6,8 @@ function initDSSupport(){
 }
 function setData(di){
 	// var di = $("#dataDropDown").attr("value");
-	console.log("set data to "+di);
+	// console.log("set data to "+di);
+	MIV.di = di;
 	curDataSet = MIV.sdata[di];
 	// clear stream window content 
 	var eswindow = MIV.swindow;
@@ -19,6 +20,15 @@ function setData(di){
 	MIV.vgvis.data("rawstream").remove(function(d){
 		return true;
 	});
+
+	if (di == 2) // twitter
+	{
+		MIV.map.fitBounds(usa_bounds);
+	}
+	else {
+		MIV.map.setView(seattleCenter,10);
+	}
+	
 	MIV.cats = MIV.defCats;
 	compileAndRun();
 	MIV.vgvis.update();
@@ -55,15 +65,16 @@ function setSize(x){
 	};
 }
 var ti = 0;
-function getTuple(){
-	// var p = MIV.data[ti];
-	var p = curDataSet[ti];
+
+
+function processTuple(p){
 	p.cat = assignCat(p);
 	p.tid = ti;
 	// console.log(p);
 	var cat = assignCat(p); // update category
 	var catc = getCatColor(cat);
-	var iconr = L.MakiMarkers.icon({icon: "emergency-telephone", color: catc, size: "m"});
+	var iconName = getIconName();
+	var iconr = L.MakiMarkers.icon({icon: iconName, color: catc, size: "m"});
 	var m = L.marker([p.lat,p.lng],{icon:iconr}).addTo(MIV.map);
 	var mtext = p.text;
 	var mpopup = m.bindPopup(mtext);
@@ -85,7 +96,6 @@ function getTuple(){
 	MIV.swindow.push(dataitem);
 
 	// remove expired data 
-	// var extups = [];
 	while (MIV.swindow.length > MIV.swSize){
 		var edi = MIV.swindow.shift();
 		// extups.push(edi);
@@ -95,32 +105,53 @@ function getTuple(){
 
 	// update vegavis
 	updateVGVis();
-	// setTimeout(function(){
-	// 	while (MIV.swindow.length > MIV.swSize){
-	// 		var edi = MIV.swindow.shift();
-	// 		// console.log("remove"+edi);	
-	// 		// Updata map state
-	// 		MIV.map.removeLayer(edi.marker);
-	// 		// need to update VIS state. to remove data
-			
-			
-	// 	}
-	// },10);
-
-	// console.log(p);
 	ti++;
 }
+function getTuple(){
+	// var p = MIV.data[ti];
+	var p;
+	var validtup = false;
+	if (MIV.di == 2){
+		// twitter stream
+		var url = "twitterstream";
+		$.getJSON( url, function( data ) {
+			if (data.valid){
+				// console.log(data);
+				processTuple(data);					
+			}			
+		});
+
+	}
+	else{
+		p = curDataSet[ti];
+		processTuple(p);		
+	}	
+}
+
 function assignCat(p){
-	var rescat = MIV.defCat; 
+	var rescat = null; 
 	for (var i = 0; i < MIV.cats.length; i++) {
 		var re = new RegExp(MIV.cats[i]);
 		if (re.test(p.text)){
-		// 	console.log(p);
+			// console.log(p);
 			rescat = MIV.cats[i];
 			break;
 		}
 	};
+
+	if (rescat == null){
+		rescat = MIV.defCat
+	}
 	return rescat;
+}
+
+function getIconName(){
+	var res = "emergency-telephone";
+	if (MIV.di == 2){
+		// for twitter stream use special icon
+		res = "post"
+	} 
+	return res;
 }
 function updateVGVis(){
 	
@@ -144,7 +175,9 @@ function updateVGVis(){
 		var d = MIV.swindow[i];
 		d.tup.cat = assignCat(d.tup); // update category
 		d.tup.catc = getCatColor(d.tup.cat);
-		var nicon = L.MakiMarkers.icon({icon: "emergency-telephone", color: d.tup.catc, size: "m"});
+		var iconName = getIconName();
+
+		var nicon = L.MakiMarkers.icon({icon: iconName, color: d.tup.catc, size: "m"});
 		d.marker.setIcon(nicon);
 		d = applyBounds(d);
 	 	// console.log(d);
