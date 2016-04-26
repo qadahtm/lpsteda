@@ -67,15 +67,18 @@ object Webserver extends App with SimpleRoutingApp {
   
    val getTweet = path("twitterstream") {
     get {
-//      var res = ""
-//      if (TwitterUtils.geotagged.size() == 0){
-//        res = JsObject("valid" -> JsBoolean(false)).toString()
-//      }
-//      else {
-//        res = TwitterUtils.getATweetSync()
-//      }
-      complete(HttpResponse(entity = HttpEntity(MediaTypes.`application/json`,
-       TwitterUtils.getATweetSync())))
+      ctx => {
+//        println(s"====== current size of geotagged ${TwitterUtils.geotagged.size()}");
+        var res = TwitterUtils.getATweetAsync()
+//        println(s"got ${res}")
+        
+        if (res == null){
+          res = JsObject("valid" -> JsBoolean(false)).toString()
+        }
+        
+        ctx.complete(HttpResponse(entity = HttpEntity(MediaTypes.`application/json`,
+         res)))
+      }      
     }
   }
   

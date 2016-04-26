@@ -29,10 +29,11 @@ var mapboxapi = {
 
 ### Twitter API configuration
 
-To make the live twitter streaming work, you need to create a file called `twitter.conf` with following content having the approiate values for your Twitter's API credentials. This config file should be placed in the same direcotry of the project.
+By default, the integration with Twitter's streaming API is disabled. To make the live twitter streaming work, you need to modify the configuration file called `twitter.conf` with correct values from your Twitter's API credentials. This config file should be placed in the same direcotry of the project. 
 
 ```
 twitter.api {
+	enabled = true, // enables Twitter's API intergration
 	consumerKey = "your consumer key here", 
 	consumerSecret= "your consumer secret here",
 	token = "your access token here", 
